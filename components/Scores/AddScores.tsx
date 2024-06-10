@@ -49,7 +49,7 @@ export default function AddScores() {
     <main className="flex gap-4 items-start justify-center flex-col m-5">
       <div className="flex items-center justify-between w-full">
         <code className="relative rounded bg-muted px-[15px] py-[4px] font-mono text-2xl font-semibold">
-          Tracker
+          Codz Cricket
         </code>
         <Button
           disabled={getCurrentOverPreview?.length > 0 ? true : false}
@@ -59,7 +59,7 @@ export default function AddScores() {
             window.location.reload();
           }}
         >
-          Start New Inning
+          NEW
         </Button>
       </div>
       <Separator className="mt-0 border-inherit" />
@@ -97,7 +97,7 @@ export default function AddScores() {
         <h4 className="scroll-m-20 text-xl font-semibold tracking-tight mx-1 mt-3">
           Current Over action
         </h4>
-        <div className="bg-slate-300 w-full p-5 rounded-lg mt-3">
+        <div className="bg-muted w-full p-5 rounded-lg mt-3">
           <div className="flex gap-4 items-center justify-center mt-0">
             <Input
               placeholder="Add Bowler's name"
