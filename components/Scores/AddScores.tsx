@@ -4,8 +4,6 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 
-
-
 interface ITOver {
   name: string;
   runs: number;
@@ -49,7 +47,19 @@ export default function AddScores() {
 
   return (
     <main className="flex gap-4 items-start justify-center flex-col m-5">
-      <Separator className="mt-5 border-inherit" />
+      <div>
+        <Button
+          disabled={getCurrentOverPreview?.length > 0 ? true : false}
+          variant="destructive"
+          onClick={() => {
+            localStorage.clear();
+            window.location.reload();
+          }}
+        >
+          Start New Inning
+        </Button>
+      </div>
+      <Separator className="mt-0 border-inherit" />
       <div>
         <h4 className="scroll-m-20 text-xl font-semibold tracking-tight mx-1">
           Score (Current Inning)
@@ -74,7 +84,7 @@ export default function AddScores() {
                     Total Runs:
                   </th>
                   <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
-                    {totalRuns}
+                    {totalRuns || 0}
                   </th>
                 </tr>
               </thead>
@@ -111,7 +121,10 @@ export default function AddScores() {
                 e.preventDefault();
                 let payload = {
                   name: getCurrentBowlersName,
-                  runs: getCurrentOverPreview?.length > 0 ? [...getCurrentOverPreview, getBallActionResult] : [ getBallActionResult],
+                  runs:
+                    getCurrentOverPreview?.length > 0
+                      ? [...getCurrentOverPreview, getBallActionResult]
+                      : [getBallActionResult],
                 };
                 localStorage.setItem("current_over", JSON.stringify(payload));
                 window.location.reload();
@@ -120,14 +133,13 @@ export default function AddScores() {
               Add
             </Button>
           </div>
-          <div className="flex gap-4 items-center justify-center mt-3">
+          <div className="flex gap-4 flex-wrap items-center justify-center mt-3">
+            <Button onClick={() => setBallActionResult("0")}>0</Button>
             <Button onClick={() => setBallActionResult("1")}>1</Button>
             <Button onClick={() => setBallActionResult("2")}>2</Button>
             <Button onClick={() => setBallActionResult("3")}>3</Button>
             <Button onClick={() => setBallActionResult("4")}>4</Button>
             <Button onClick={() => setBallActionResult("6")}>6</Button>
-          </div>
-          <div className="flex gap-4 items-start justify-center mt-3">
             <Button onClick={() => setBallActionResult("Wide")}>Wide</Button>
             <Button onClick={() => setBallActionResult("No")}>No</Button>
           </div>
