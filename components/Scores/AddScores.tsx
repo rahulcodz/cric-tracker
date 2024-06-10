@@ -1,8 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { toPng } from 'html-to-image';
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
 interface ITOver {
   name: string;
@@ -13,6 +15,9 @@ export default function AddScores() {
   const [getCurrentBowlersName, setCurrentBowlersName] = useState("");
   const [getBallActionResult, setBallActionResult] = useState("0");
   const [getCurrentOverPreview, setCurrentOverPreview] = useState([]);
+
+  const elementRef = useRef<any>();
+
 
   const [getTotalInningsOver, setTotalInningsOver] = useState<ITOver[]>([]);
 
@@ -33,6 +38,19 @@ export default function AddScores() {
       }
     }, 0);
 
+  const htmlToImageConvert = () => {
+    toPng(elementRef.current, { cacheBust: false })
+      .then((dataUrl) => {
+        const link = document.createElement("a");
+        link.download = "my-image-name.png";
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     const current_over_preveiew = JSON.parse(
       localStorage.getItem("current_over") as string
@@ -51,7 +69,7 @@ export default function AddScores() {
         <code className="relative rounded bg-muted px-[15px] py-[4px] font-mono text-2xl font-semibold">
           Codz Cricket
         </code>
-        <Button
+        {/* <Button
           disabled={getCurrentOverPreview?.length > 0 ? true : false}
           variant="destructive"
           onClick={() => {
@@ -60,38 +78,56 @@ export default function AddScores() {
           }}
         >
           New Game
-        </Button>
+        </Button> */}
+        <div>
+          <DropdownMenu>
+            <DropdownMenuTrigger><Button
+              disabled={getCurrentOverPreview?.length > 0 ? true : false}
+              variant="destructive"
+            >
+              Actions
+            </Button></DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => { localStorage.clear(); window.location.reload(); }}>New Inning</DropdownMenuItem>
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem onClick={htmlToImageConvert}>Download Score</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
       <Separator className="mt-0 border-inherit" />
       <div>
-        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight mx-1">
-          Score (Current Inning)
-        </h4>
-        <div className="w-full p-0 rounded-lg mt-0">
-          <div className="my-2 w-full overflow-y-auto">
-            <table className="w-full">
-              <thead>
-                {getTotalInningsOver.length > 0 &&
-                  getTotalInningsOver.map((data, index) => (
-                    <tr className="m-0 border-t-3 p-0" key={index}>
-                      <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
-                        {index+1}. {data.name}
-                      </th>
-                      <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
-                        {data.runs}
-                      </th>
-                    </tr>
-                  ))}
-                <tr className="m-0 border-t-3 p-0 bg-muted">
-                  <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
-                    Total Runs:
-                  </th>
-                  <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
-                    {totalRuns || 0}
-                  </th>
-                </tr>
-              </thead>
-            </table>
+        <div ref={elementRef}>
+          <h4 className="scroll-m-20 text-xl font-semibold tracking-tight mx-1">
+            Score (Current Inning)
+          </h4>
+          <div className="w-full p-0 rounded-lg mt-0">
+            <div className="my-2 w-full overflow-y-auto">
+              <table className="w-full" >
+                <thead>
+                  {getTotalInningsOver.length > 0 &&
+                    getTotalInningsOver.map((data, index) => (
+                      <tr className="m-0 border-t-3 p-0" key={index}>
+                        <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
+                          {index + 1}. {data.name}
+                        </th>
+                        <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
+                          {data.runs}
+                        </th>
+                      </tr>
+                    ))}
+                  <tr className="m-0 border-t-3 p-0 bg-muted">
+                    <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
+                      Total Runs:
+                    </th>
+                    <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
+                      {totalRuns || 0}
+                    </th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
           </div>
         </div>
         <h4 className="scroll-m-20 text-xl font-semibold tracking-tight mx-1 mt-3">
