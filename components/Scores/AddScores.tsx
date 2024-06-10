@@ -11,7 +11,7 @@ interface ITOver {
 
 export default function AddScores() {
   const [getCurrentBowlersName, setCurrentBowlersName] = useState("");
-  const [getBallActionResult, setBallActionResult] = useState("");
+  const [getBallActionResult, setBallActionResult] = useState("0");
   const [getCurrentOverPreview, setCurrentOverPreview] = useState([]);
 
   const [getTotalInningsOver, setTotalInningsOver] = useState<ITOver[]>([]);
@@ -47,7 +47,10 @@ export default function AddScores() {
 
   return (
     <main className="flex gap-4 items-start justify-center flex-col m-5">
-      <div>
+      <div className="flex items-center justify-between w-full">
+        <code className="relative rounded bg-muted px-[15px] py-[4px] font-mono text-2xl font-semibold">
+          Tracker
+        </code>
         <Button
           disabled={getCurrentOverPreview?.length > 0 ? true : false}
           variant="destructive"
@@ -72,7 +75,7 @@ export default function AddScores() {
                   getTotalInningsOver.map((data, index) => (
                     <tr className="m-0 border-t-3 p-0" key={index}>
                       <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
-                        {data.name}
+                        {index+1}. {data.name}
                       </th>
                       <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
                         {data.runs}
@@ -98,6 +101,7 @@ export default function AddScores() {
           <div className="flex gap-4 items-center justify-center mt-0">
             <Input
               placeholder="Add Bowler's name"
+              disabled={getCurrentOverPreview?.length > 0 ? true : false}
               type="text"
               value={getCurrentBowlersName}
               onChange={(e) => {
@@ -120,7 +124,7 @@ export default function AddScores() {
               onClick={(e) => {
                 e.preventDefault();
                 let payload = {
-                  name: getCurrentBowlersName,
+                  name: getCurrentBowlersName || "John",
                   runs:
                     getCurrentOverPreview?.length > 0
                       ? [...getCurrentOverPreview, getBallActionResult]
