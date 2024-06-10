@@ -59,7 +59,7 @@ export default function AddScores() {
             window.location.reload();
           }}
         >
-          NEW
+          New Game
         </Button>
       </div>
       <Separator className="mt-0 border-inherit" />
@@ -151,6 +151,7 @@ export default function AddScores() {
           <div className="mt-4 text-right">
             <Button
               variant="destructive"
+              disabled={getCurrentOverPreview?.length > 0 ? false : true}
               onClick={(e) => {
                 e.preventDefault();
                 const payload = [
