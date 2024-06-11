@@ -1,10 +1,26 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { toPng } from 'html-to-image';
+import { toPng } from "html-to-image";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
 
 interface ITOver {
   name: string;
@@ -17,7 +33,6 @@ export default function AddScores() {
   const [getCurrentOverPreview, setCurrentOverPreview] = useState([]);
 
   const elementRef = useRef<any>();
-
 
   const [getTotalInningsOver, setTotalInningsOver] = useState<ITOver[]>([]);
 
@@ -69,31 +84,131 @@ export default function AddScores() {
         <code className="relative rounded bg-muted px-[15px] py-[4px] font-mono text-2xl font-semibold">
           Codz Cricket
         </code>
-        {/* <Button
-          disabled={getCurrentOverPreview?.length > 0 ? true : false}
-          variant="destructive"
-          onClick={() => {
-            localStorage.clear();
-            window.location.reload();
-          }}
-        >
-          New Game
-        </Button> */}
         <div>
-          <DropdownMenu>
-            <DropdownMenuTrigger><Button
-              disabled={getCurrentOverPreview?.length > 0 ? true : false}
-              variant="destructive"
-            >
-              Actions
-            </Button></DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => { localStorage.clear(); window.location.reload(); }}>New Inning</DropdownMenuItem>
-              <DropdownMenuSeparator />
+          <Dialog>
+            <DialogTrigger>
+              <Button variant="destructive">Action</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <div className="flex flex-col gap-1">
+                <DialogClose asChild>
+                  <Button
+                    className="rounded-none rounded-t-lg"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      let payload = {
+                        name: getCurrentBowlersName || "John",
+                        runs: getCurrentOverPreview,
+                      };
+                      payload?.runs?.pop()
+                      localStorage.setItem("current_over", JSON.stringify(payload));
+                      window.location.reload();
+                    }}
+                  >
+                    Remove last ball
+                  </Button>
+                </DialogClose>
+                <DialogClose asChild>
+                  <Button
+                    className="rounded-none"
+                    onClick={() => {
+                      localStorage.clear();
+                      window.location.reload();
+                    }}
+                  >
+                    Start new inning
+                  </Button>
+                </DialogClose>
+                <DialogClose asChild>
+                  <Button
+                    className="rounded-none"
+                    onClick={async () => {
+                      try {
+                        const res = await fetch(
+                          "https://6667e188f53957909ff597dd.mockapi.io/api/v1/crick-tracker/current_over/1",
+                          {
+                            method: "GET",
+                            headers: { "content-type": "application/json" },
+                          }
+                        );
 
-              <DropdownMenuItem onClick={htmlToImageConvert}>Download Score</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                        if (res.ok) {
+                          const data = await res.json();
+                          localStorage.setItem(
+                            "totalInningOvers",
+                            JSON.stringify(data?.totalInningOvers)
+                          );
+                          window.location.reload();
+                          alert("Inning imported successfully!");
+                        } else {
+                          console.log(
+                            "Request failed with status:",
+                            res.status
+                          );
+                        }
+                      } catch (error) {
+                        console.error("An error occurred:", error);
+                      }
+                    }}
+                  >
+                    Import inning
+                  </Button>
+                </DialogClose>
+                <DialogClose asChild>
+                  <Button
+                    className="rounded-none"
+                    onClick={async () => {
+                      try {
+                        const current_over_preveiew = JSON.parse(
+                          localStorage.getItem("current_over") as string
+                        );
+                        const total_innings_overs = JSON.parse(
+                          localStorage.getItem("totalInningOvers") as string
+                        );
+                        const url =
+                          "https://6667e188f53957909ff597dd.mockapi.io/api/v1/crick-tracker/current_over/1";
+                        const dataToUpdate = {
+                          totalInningOvers: total_innings_overs,
+                          current_over: current_over_preveiew,
+                          id: "1",
+                        };
+
+                        const res = await fetch(url, {
+                          method: "PUT",
+                          headers: {
+                            "Content-Type": "application/json",
+                          },
+                          body: JSON.stringify(dataToUpdate),
+                        });
+
+                        if (res.ok) {
+                          console.log("Data updated successfully!");
+                          alert("Inning exported successfully!");
+                        } else {
+                          console.log(
+                            "Request failed with status:",
+                            res.status
+                          );
+                        }
+                      } catch (error) {
+                        console.error("An error occurred:", error);
+                      }
+                    }}
+                  >
+                    Export inning
+                  </Button>
+                </DialogClose>
+                <DialogClose asChild>
+                  <Button
+                    className="rounded-none rounded-b-lg"
+                    onClick={htmlToImageConvert}
+                  >
+                    Download inning
+                  </Button>
+                </DialogClose>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
       <Separator className="mt-0 border-inherit" />
@@ -104,7 +219,7 @@ export default function AddScores() {
           </h4>
           <div className="w-full p-0 rounded-lg mt-0">
             <div className="my-2 w-full overflow-y-auto">
-              <table className="w-full" >
+              <table className="w-full">
                 <thead>
                   {getTotalInningsOver.length > 0 &&
                     getTotalInningsOver.map((data, index) => (
@@ -202,7 +317,7 @@ export default function AddScores() {
                 window.location.reload();
               }}
             >
-              Mark Complete
+              Mark Complete ({getCurrentOverPreview?.length > 0 && getCurrentOverPreview?.filter(item => item !== "Wide" && item !== "No")?.length})
             </Button>
           </div>
         </div>
