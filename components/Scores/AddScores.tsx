@@ -97,7 +97,21 @@ export default function AddScores() {
                       window.location.reload();
                     }}
                   >
-                    Remove last ball
+                    Remove previous ball
+                  </Button>
+                </DialogClose>
+                <DialogClose asChild>
+                  <Button
+                    className="rounded-none text-xl h-12"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      let payload = [...getTotalInningsOver]
+                      payload?.pop()
+                      localStorage.setItem("totalInningOvers", JSON.stringify(payload));
+                      window.location.reload();
+                    }}
+                  >
+                    Remove previous over
                   </Button>
                 </DialogClose>
                 <DialogClose asChild>
