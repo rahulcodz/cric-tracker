@@ -5,14 +5,6 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import {
   Dialog,
   DialogClose,
   DialogContent,
@@ -87,13 +79,13 @@ export default function AddScores() {
         <div>
           <Dialog>
             <DialogTrigger>
-              <Button variant="destructive">Action</Button>
+              <Button variant="destructive" className="text-md">Action</Button>
             </DialogTrigger>
             <DialogContent>
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-0.5">
                 <DialogClose asChild>
                   <Button
-                    className="rounded-none rounded-t-lg"
+                    className="rounded-none rounded-t-lg text-xl h-12"
                     onClick={(e) => {
                       e.preventDefault();
                       let payload = {
@@ -110,7 +102,7 @@ export default function AddScores() {
                 </DialogClose>
                 <DialogClose asChild>
                   <Button
-                    className="rounded-none"
+                    className="rounded-none text-lg text-xl h-12"
                     onClick={() => {
                       localStorage.clear();
                       window.location.reload();
@@ -121,7 +113,7 @@ export default function AddScores() {
                 </DialogClose>
                 <DialogClose asChild>
                   <Button
-                    className="rounded-none"
+                    className="rounded-none text-lg text-xl h-12"
                     onClick={async () => {
                       try {
                         const res = await fetch(
@@ -137,6 +129,10 @@ export default function AddScores() {
                           localStorage.setItem(
                             "totalInningOvers",
                             JSON.stringify(data?.totalInningOvers)
+                          );
+                          localStorage.setItem(
+                            "current_over",
+                            JSON.stringify(data?.current_over)
                           );
                           window.location.reload();
                           alert("Inning imported successfully!");
@@ -156,7 +152,7 @@ export default function AddScores() {
                 </DialogClose>
                 <DialogClose asChild>
                   <Button
-                    className="rounded-none"
+                    className="rounded-none text-lg text-xl h-12"
                     onClick={async () => {
                       try {
                         const current_over_preveiew = JSON.parse(
@@ -200,7 +196,7 @@ export default function AddScores() {
                 </DialogClose>
                 <DialogClose asChild>
                   <Button
-                    className="rounded-none rounded-b-lg"
+                    className="rounded-none rounded-b-lg text-lg text-xl h-12"
                     onClick={htmlToImageConvert}
                   >
                     Download inning
@@ -224,19 +220,19 @@ export default function AddScores() {
                   {getTotalInningsOver.length > 0 &&
                     getTotalInningsOver.map((data, index) => (
                       <tr className="m-0 border-t-3 p-0" key={index}>
-                        <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
+                        <th className="border border-slate-500 px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
                           {index + 1}. {data.name}
                         </th>
-                        <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
+                        <th className="border border-slate-500 px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
                           {data.runs}
                         </th>
                       </tr>
                     ))}
                   <tr className="m-0 border-t-3 p-0 bg-muted">
-                    <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
+                    <th className="border border-slate-500 px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
                       Total Runs:
                     </th>
-                    <th className="border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
+                    <th className="border border-slate-500 px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
                       {totalRuns || 0}
                     </th>
                   </tr>
@@ -252,6 +248,7 @@ export default function AddScores() {
           <div className="flex gap-4 items-center justify-center mt-0">
             <Input
               placeholder="Add Bowler's name"
+              className="text-md"
               disabled={getCurrentOverPreview?.length > 0 ? true : false}
               type="text"
               value={getCurrentBowlersName}
@@ -264,6 +261,7 @@ export default function AddScores() {
             <Input
               placeholder="Add Ball Action"
               disabled
+              className="text-md"
               type="text"
               value={getBallActionResult}
               onChange={(e) => {
@@ -272,6 +270,7 @@ export default function AddScores() {
             />
             <Button
               variant="destructive"
+              className="text-md"
               onClick={(e) => {
                 e.preventDefault();
                 let payload = {
@@ -289,20 +288,21 @@ export default function AddScores() {
             </Button>
           </div>
           <div className="flex gap-4 flex-wrap items-center justify-center mt-3">
-            <Button onClick={() => setBallActionResult("0")}>0</Button>
-            <Button onClick={() => setBallActionResult("1")}>1</Button>
-            <Button onClick={() => setBallActionResult("2")}>2</Button>
-            <Button onClick={() => setBallActionResult("3")}>3</Button>
-            <Button onClick={() => setBallActionResult("4")}>4</Button>
-            <Button onClick={() => setBallActionResult("6")}>6</Button>
-            <Button onClick={() => setBallActionResult("Wide")}>Wide</Button>
-            <Button onClick={() => setBallActionResult("No")}>No</Button>
+            <Button className="text-xl" onClick={() => setBallActionResult("0")}>0</Button>
+            <Button className="text-xl" onClick={() => setBallActionResult("1")}>1</Button>
+            <Button className="text-xl" onClick={() => setBallActionResult("2")}>2</Button>
+            <Button className="text-xl" onClick={() => setBallActionResult("3")}>3</Button>
+            <Button className="text-xl" onClick={() => setBallActionResult("4")}>4</Button>
+            <Button className="text-xl" onClick={() => setBallActionResult("6")}>6</Button>
+            <Button className="text-xl" onClick={() => setBallActionResult("Wide")}>Wide</Button>
+            <Button className="text-xl" onClick={() => setBallActionResult("No")}>No</Button>
           </div>
           <Separator className="mt-5 border-inherit" />
           <div className="mt-4 text-right">
             <Button
+              className="text-md"
               variant="destructive"
-              disabled={getCurrentOverPreview?.length > 0 ? false : true}
+              disabled={getCurrentOverPreview?.filter(item => item !== "Wide" && item !== "No")?.length > 5 ? false : true}
               onClick={(e) => {
                 e.preventDefault();
                 const payload = [
@@ -317,7 +317,7 @@ export default function AddScores() {
                 window.location.reload();
               }}
             >
-              Mark Complete ({getCurrentOverPreview?.length > 0 && getCurrentOverPreview?.filter(item => item !== "Wide" && item !== "No")?.length})
+              Mark Complete ({getCurrentOverPreview?.length > 0 && getCurrentOverPreview?.filter(item => item !== "Wide" && item !== "No")?.length || 0})
             </Button>
           </div>
         </div>
@@ -329,7 +329,7 @@ export default function AddScores() {
         <div className="max-w-full flex gap-4 flex-wrap items-center justify-center mt-3">
           {getCurrentOverPreview?.length > 0 &&
             getCurrentOverPreview.map((data, index) => (
-              <Button key={index}>{data}</Button>
+              <Button className="text-md" key={index}>{data}</Button>
             ))}
         </div>
       </div>
