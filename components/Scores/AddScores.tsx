@@ -82,10 +82,10 @@ export default function AddScores() {
               <Button variant="destructive" className="text-md">Action</Button>
             </DialogTrigger>
             <DialogContent>
-              <div className="flex flex-col gap-0.5">
+              <div className="flex flex-col gap-px">
                 <DialogClose asChild>
                   <Button
-                    className="rounded-none rounded-t-lg text-xl h-12"
+                    className="rounded-none rounded-t-lg text-xl h-12 flex items-center justify-start"
                     onClick={(e) => {
                       e.preventDefault();
                       let payload = {
@@ -102,7 +102,7 @@ export default function AddScores() {
                 </DialogClose>
                 <DialogClose asChild>
                   <Button
-                    className="rounded-none text-xl h-12"
+                    className="rounded-none text-xl h-12 flex items-center justify-start"
                     onClick={(e) => {
                       e.preventDefault();
                       let payload = [...getTotalInningsOver]
@@ -116,7 +116,7 @@ export default function AddScores() {
                 </DialogClose>
                 <DialogClose asChild>
                   <Button
-                    className="rounded-none text-lg text-xl h-12"
+                    className="rounded-none text-lg text-xl h-12 flex items-center justify-start"
                     onClick={() => {
                       localStorage.clear();
                       window.location.reload();
@@ -127,7 +127,7 @@ export default function AddScores() {
                 </DialogClose>
                 <DialogClose asChild>
                   <Button
-                    className="rounded-none text-lg text-xl h-12"
+                    className="rounded-none text-lg text-xl h-12 flex items-center justify-start"
                     onClick={async () => {
                       try {
                         const res = await fetch(
@@ -166,7 +166,7 @@ export default function AddScores() {
                 </DialogClose>
                 <DialogClose asChild>
                   <Button
-                    className="rounded-none text-lg text-xl h-12"
+                    className="rounded-none text-lg text-xl h-12 flex items-center justify-start"
                     onClick={async () => {
                       try {
                         const current_over_preveiew = JSON.parse(
@@ -210,7 +210,7 @@ export default function AddScores() {
                 </DialogClose>
                 <DialogClose asChild>
                   <Button
-                    className="rounded-none rounded-b-lg text-lg text-xl h-12"
+                    className="rounded-none rounded-b-lg text-lg text-xl h-12 flex items-center justify-start"
                     onClick={htmlToImageConvert}
                   >
                     Download inning
@@ -256,7 +256,7 @@ export default function AddScores() {
           </div>
         </div>
         <h4 className="scroll-m-20 text-xl font-semibold tracking-tight mx-1 mt-3">
-          Current Over action
+          Current Over Action
         </h4>
         <div className="bg-muted w-full p-5 rounded-lg mt-3">
           <div className="flex gap-4 items-center justify-center mt-0">
