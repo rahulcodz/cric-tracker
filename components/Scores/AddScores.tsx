@@ -47,12 +47,20 @@ export default function AddScores() {
     }, 0);
 
   const now = new Date();
-  const hours = now.getHours().toString().padStart(2, '0');
-  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const hours = now.getHours().toString().padStart(2, "0");
+  const minutes = now.getMinutes().toString().padStart(2, "0");
 
   const formattedTime = `${hours}:${minutes}`;
 
-  const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const daysOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
   const currentDate = new Date();
   const dayName = daysOfWeek[currentDate.getDay()];
   const fileName = dayName + "_" + formattedTime;
@@ -82,10 +90,14 @@ export default function AddScores() {
     setTotalInningsOver(total_innings_overs || []);
   }, []);
 
-  console.log(getCurrentOverPreview?.filter(item => item !== "Wide" && item !== "No")?.length);
+  console.log(
+    getCurrentOverPreview?.filter((item) => item !== "Wide" && item !== "No")
+      ?.length
+  );
 
-  const ballCount = getCurrentOverPreview?.filter(item => item !== "Wide" && item !== "No")?.length || 0;
-
+  const ballCount =
+    getCurrentOverPreview?.filter((item) => item !== "Wide" && item !== "No")
+      ?.length || 0;
 
   return (
     <main className="flex gap-4 items-start justify-center flex-col m-5">
@@ -93,11 +105,15 @@ export default function AddScores() {
         {/* <code className="relative rounded bg-muted px-[15px] py-[4px] font-mono text-2xl font-semibold">
           Codz Cricket
         </code> */}
-        <div><Logo /></div>
+        <div>
+          <Logo />
+        </div>
         <div>
           <Dialog>
             <DialogTrigger>
-              <Button variant="destructive" className="text-md">Action</Button>
+              <Button variant="destructive" className="text-md">
+                Action
+              </Button>
             </DialogTrigger>
             <DialogContent>
               <div className="flex flex-col gap-px">
@@ -110,8 +126,11 @@ export default function AddScores() {
                         name: getCurrentBowlersName || "John",
                         runs: getCurrentOverPreview,
                       };
-                      payload?.runs?.pop()
-                      localStorage.setItem("current_over", JSON.stringify(payload));
+                      payload?.runs?.pop();
+                      localStorage.setItem(
+                        "current_over",
+                        JSON.stringify(payload)
+                      );
                       window.location.reload();
                     }}
                   >
@@ -123,9 +142,12 @@ export default function AddScores() {
                     className="rounded-none text-xl h-12 flex items-center justify-start"
                     onClick={(e) => {
                       e.preventDefault();
-                      let payload = [...getTotalInningsOver]
-                      payload?.pop()
-                      localStorage.setItem("totalInningOvers", JSON.stringify(payload));
+                      let payload = [...getTotalInningsOver];
+                      payload?.pop();
+                      localStorage.setItem(
+                        "totalInningOvers",
+                        JSON.stringify(payload)
+                      );
                       window.location.reload();
                     }}
                   >
@@ -251,7 +273,10 @@ export default function AddScores() {
                 <thead>
                   {getTotalInningsOver.length > 0 &&
                     getTotalInningsOver.map((data, index) => (
-                      <tr className="m-0 border-t-3 p-0 bg-slate-900" key={index}>
+                      <tr
+                        className="m-0 border-t-3 p-0 bg-slate-900"
+                        key={index}
+                      >
                         <th className="border border-slate-500 px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
                           {index + 1}. {data.name}
                         </th>
@@ -321,14 +346,68 @@ export default function AddScores() {
             </Button>
           </div>
           <div className="flex gap-4 flex-wrap items-center justify-center mt-3">
-            <Button className="text-xl" onClick={() => setBallActionResult("0")}>0</Button>
-            <Button className="text-xl" onClick={() => setBallActionResult("1")}>1</Button>
-            <Button className="text-xl" onClick={() => setBallActionResult("2")}>2</Button>
-            <Button className="text-xl" onClick={() => setBallActionResult("3")}>3</Button>
-            <Button className="text-xl" onClick={() => setBallActionResult("4")}>4</Button>
-            <Button className="text-xl" onClick={() => setBallActionResult("6")}>6</Button>
-            <Button className="text-xl" onClick={() => setBallActionResult("Wide")}>Wide</Button>
-            <Button className="text-xl" onClick={() => setBallActionResult("No")}>No</Button>
+            <Button
+              className="text-xl"
+              onClick={() => setBallActionResult("0")}
+            >
+              0
+            </Button>
+            <Button
+              className="text-xl"
+              onClick={() => setBallActionResult("1")}
+            >
+              1
+            </Button>
+            <Button
+              className="text-xl"
+              onClick={() => setBallActionResult("2")}
+            >
+              2
+            </Button>
+            <Button
+              className="text-xl"
+              onClick={() => setBallActionResult("3")}
+            >
+              3
+            </Button>
+            <Button
+              className="text-xl"
+              onClick={() => setBallActionResult("4")}
+            >
+              4
+            </Button>
+            <Button
+              className="text-xl"
+              onClick={() => setBallActionResult("6")}
+            >
+              6
+            </Button>
+            <Button
+              className="text-xl"
+              onClick={() => setBallActionResult("Wide")}
+            >
+              Wide
+            </Button>
+            <Button
+              className="text-xl"
+              onClick={() => setBallActionResult("No")}
+            >
+              No
+            </Button>
+            <Button
+              className="text-xl"
+              onClick={() => {
+                if (getBallActionResult === "Wide") {
+                  setBallActionResult((2).toString());
+                } else if (getBallActionResult === "No") {
+                  setBallActionResult((2).toString());
+                } else {
+                  setBallActionResult((+getBallActionResult + 1).toString());
+                }
+              }}
+            >
+              + 1
+            </Button>
           </div>
           <Separator className="mt-5 border-inherit" />
           <div className="mt-4 text-right">
@@ -350,7 +429,13 @@ export default function AddScores() {
                 window.location.reload();
               }}
             >
-              Mark Complete ({getCurrentOverPreview?.length > 0 && getCurrentOverPreview?.filter(item => item !== "Wide" && item !== "No")?.length || 0})
+              Mark Complete (
+              {(getCurrentOverPreview?.length > 0 &&
+                getCurrentOverPreview?.filter(
+                  (item) => item !== "Wide" && item !== "No"
+                )?.length) ||
+                0}
+              )
             </Button>
           </div>
         </div>
@@ -362,7 +447,9 @@ export default function AddScores() {
         <div className="max-w-full flex gap-4 flex-wrap items-center justify-center mt-3">
           {getCurrentOverPreview?.length > 0 &&
             getCurrentOverPreview.map((data, index) => (
-              <Button className="text-md" key={index}>{data}</Button>
+              <Button className="text-md" key={index}>
+                {data}
+              </Button>
             ))}
         </div>
       </div>
