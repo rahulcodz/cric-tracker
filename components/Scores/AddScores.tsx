@@ -46,11 +46,22 @@ export default function AddScores() {
       }
     }, 0);
 
+  const now = new Date();
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+
+  const formattedTime = `${hours}:${minutes}`;
+
+  const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const currentDate = new Date();
+  const dayName = daysOfWeek[currentDate.getDay()];
+  const fileName = dayName + "_" + formattedTime;
+
   const htmlToImageConvert = () => {
     toPng(elementRef.current, { cacheBust: false })
       .then((dataUrl) => {
         const link = document.createElement("a");
-        link.download = "my-image-name.png";
+        link.download = fileName || "test";
         link.href = dataUrl;
         link.click();
       })
@@ -231,7 +242,7 @@ export default function AddScores() {
       <Separator className="mt-0 border-inherit" />
       <div>
         <div ref={elementRef}>
-          <h4 className="scroll-m-20 text-xl font-semibold tracking-tight mx-1">
+          <h4 className="scroll-m-20 text-xl font-semibold tracking-tight mx-1 bg-dark:invert">
             Score (Current Inning)
           </h4>
           <div className="w-full p-0 rounded-lg mt-0">
