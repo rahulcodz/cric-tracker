@@ -13,6 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
+import Logo from "../assest/logo";
 
 interface ITOver {
   name: string;
@@ -70,12 +71,18 @@ export default function AddScores() {
     setTotalInningsOver(total_innings_overs || []);
   }, []);
 
+  console.log(getCurrentOverPreview?.filter(item => item !== "Wide" && item !== "No")?.length);
+
+  const ballCount = getCurrentOverPreview?.filter(item => item !== "Wide" && item !== "No")?.length || 0;
+
+
   return (
     <main className="flex gap-4 items-start justify-center flex-col m-5">
       <div className="flex items-center justify-between w-full">
-        <code className="relative rounded bg-muted px-[15px] py-[4px] font-mono text-2xl font-semibold">
+        {/* <code className="relative rounded bg-muted px-[15px] py-[4px] font-mono text-2xl font-semibold">
           Codz Cricket
-        </code>
+        </code> */}
+        <div><Logo /></div>
         <div>
           <Dialog>
             <DialogTrigger>
@@ -285,6 +292,7 @@ export default function AddScores() {
             <Button
               variant="destructive"
               className="text-md"
+              disabled={ballCount >= 6 ? true : false}
               onClick={(e) => {
                 e.preventDefault();
                 let payload = {
@@ -316,7 +324,7 @@ export default function AddScores() {
             <Button
               className="text-md"
               variant="destructive"
-              disabled={getCurrentOverPreview?.filter(item => item !== "Wide" && item !== "No")?.length > 5 ? false : true}
+              disabled={ballCount === 6 ? false : true}
               onClick={(e) => {
                 e.preventDefault();
                 const payload = [
