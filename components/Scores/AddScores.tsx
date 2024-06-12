@@ -240,7 +240,7 @@ export default function AddScores() {
                 <thead>
                   {getTotalInningsOver.length > 0 &&
                     getTotalInningsOver.map((data, index) => (
-                      <tr className="m-0 border-t-3 p-0" key={index}>
+                      <tr className="m-0 border-t-3 p-0 bg-slate-900" key={index}>
                         <th className="border border-slate-500 px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
                           {index + 1}. {data.name}
                         </th>
